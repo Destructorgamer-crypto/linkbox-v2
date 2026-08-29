@@ -213,7 +213,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Capa de formas/luces flotantes de fondo (dinámica para ambos modos) */
         .background-blobs {
             position: fixed;
             top: 0;
@@ -336,6 +335,7 @@
             width: 100%;
             max-width: 900px;
             display: flex;
+            flex-wrap: wrap;
             gap: 1rem;
             margin-bottom: 2.5rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
@@ -345,6 +345,7 @@
 
         .card-form input {
             flex: 1;
+            min-width: 200px;
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             padding: 0.75rem 1rem;
@@ -445,6 +446,7 @@
             justify-content: center;
             overflow: hidden;
             transition: transform 0.3s ease;
+            position: relative;
             pointer-events: none;
         }
 
@@ -457,6 +459,16 @@
             height: 30px;
             object-fit: contain;
             border-radius: 4px;
+            pointer-events: none;
+        }
+
+        /* Estilo para la Inicial de respaldo */
+        .shortcut-initial {
+            display: none;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
             pointer-events: none;
         }
 
@@ -507,7 +519,7 @@
             background: #ef4444;
         }
 
-        /* --- ZONA DE AJUSTES --- */
+        /* --- MODALES --- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -575,7 +587,6 @@
             cursor: text;
         }
 
-        /* Estilo para el input de tipo rango (barra deslizable) */
         .settings-field-group input[type="range"] {
             -webkit-appearance: none;
             width: 100%;
@@ -630,7 +641,6 @@
             box-shadow: 0 6px 16px var(--accent-glow);
         }
 
-        /* --- ANIMACIONES EXTRA --- */
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-25px); }
             to { opacity: 1; transform: translateY(0); }
@@ -670,7 +680,6 @@
 </head>
 <body>
 
-    <!-- Capa de animación de fondo en bucle suave -->
     <div class="background-blobs">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
@@ -697,17 +706,16 @@
         </div>
     </header>
 
-    <!-- Formulario para añadir -->
+    <!-- Formulario para añadir con opción de Logo personalizado opcional -->
     <div class="card-form">
-        <input type="text" id="siteName" placeholder="Nombre personalizado (ej. Mi Web)">
+        <input type="text" id="siteName" placeholder="Nombre (ej. Mi Web)">
         <input type="text" id="siteUrl" placeholder="Enlace (ej. https://ejemplo.com)">
+        <input type="text" id="siteLogo" placeholder="Enlace de logo opcional (opcional)">
         <button onclick="addShortcut()">Añadir</button>
     </div>
 
-    <!-- Contenedor de Botones -->
     <div class="grid-container" id="gridContainer"></div>
 
-    <!-- Menú contextual (Clic Derecho) -->
     <div id="context-menu">
         <div class="menu-item" onclick="openEditModal()">Editar Web...</div>
         <div class="menu-item delete" onclick="deleteShortcut()">Eliminar</div>
@@ -724,6 +732,10 @@
             <div class="settings-field-group">
                 <label>Enlace</label>
                 <input type="text" id="editUrl" placeholder="Nuevo enlace">
+            </div>
+            <div class="settings-field-group">
+                <label>Enlace de Logo (Opcional)</label>
+                <input type="text" id="editLogo" placeholder="URL de imagen de logo">
             </div>
             <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem;">
                 <button class="settings-action-btn" style="background: rgba(128,128,128,0.2); color: var(--text-main);" onclick="closeEditModal()">Cancelar</button>
@@ -754,11 +766,10 @@
     </div>
 
     <script>
-        let shortcuts = JSON.parse(localStorage.getItem('aesthetic_shortcuts_v7')) || [];
+        let shortcuts = JSON.parse(localStorage.getItem('aesthetic_shortcuts_v8')) || [];
         let currentTargetId = null;
         let draggedIndex = null;
 
-        // Cargar preferencias guardadas
         const savedTheme = localStorage.getItem('aesthetic_theme') || 'dark';
         const savedMode = localStorage.getItem('aesthetic_mode') || 'dark';
         const savedTitle = localStorage.getItem('aesthetic_app_title') || 'Aesthetic Launchpad';
@@ -841,17 +852,24 @@
                 card.draggable = true;
                 card.style.animationDelay = `${index * 0.04}s`;
 
-                const domain = new URL(item.url.startsWith('http') ? item.url : `https://` + item.url).hostname;
-                const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+                // Determinar la imagen del logo (o buscar favicon automático)
+                let iconSrc = item.logo;
+                if (!iconSrc || iconSrc.trim() === "") {
+                    const domain = new URL(item.url.startsWith('http') ? item.url : `https://` + item.url).hostname;
+                    iconSrc = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+                }
+
+                const firstLetter = item.name ? item.name.charAt(0).toUpperCase() : '?';
 
                 card.innerHTML = `
                     <div class="shortcut-icon-wrapper">
-                        <img src="${faviconUrl}" alt="${item.name}" onerror="this.src='https://www.google.com/s2/favicons?domain=example.com&sz=64'">
+                        <img src="${iconSrc}" alt="${item.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <span class="shortcut-initial">${firstLetter}</span>
                     </div>
                     <span class="shortcut-title">${item.name}</span>
                 `;
 
-                // Eventos de Arrastrar y Soltar (Drag and Drop)
+                // Eventos Drag and Drop
                 card.addEventListener('dragstart', (e) => {
                     draggedIndex = index;
                     setTimeout(() => card.classList.add('dragging'), 0);
@@ -904,11 +922,13 @@
         function addShortcut() {
             const nameInput = document.getElementById('siteName');
             const urlInput = document.getElementById('siteUrl');
+            const logoInput = document.getElementById('siteLogo');
 
             let name = nameInput.value.trim();
             let url = urlInput.value.trim();
+            let logo = logoInput.value.trim();
 
-            if (!name || !url) return alert('Por favor, rellena ambos campos.');
+            if (!name || !url) return alert('Por favor, rellena al menos el Nombre y el Enlace.');
 
             if (!url.startsWith('http://') && !url.startsWith('https://')) {
                 url = 'https://' + url;
@@ -917,7 +937,8 @@
             const newShortcut = {
                 id: Date.now().toString(),
                 name,
-                url
+                url,
+                logo
             };
 
             shortcuts.push(newShortcut);
@@ -925,6 +946,7 @@
 
             nameInput.value = '';
             urlInput.value = '';
+            logoInput.value = '';
         }
 
         window.addEventListener('click', (e) => {
@@ -946,6 +968,7 @@
 
             document.getElementById('editName').value = shortcut.name;
             document.getElementById('editUrl').value = shortcut.url;
+            document.getElementById('editLogo').value = shortcut.logo || '';
             document.getElementById('edit-modal').style.display = 'flex';
         }
 
@@ -959,8 +982,9 @@
 
             const newName = document.getElementById('editName').value.trim();
             let newUrl = document.getElementById('editUrl').value.trim();
+            let newLogo = document.getElementById('editLogo').value.trim();
 
-            if (!newName || !newUrl) return alert('Los campos no pueden estar vacíos.');
+            if (!newName || !newUrl) return alert('Los campos de Nombre y Enlace no pueden estar vacíos.');
 
             if (!newUrl.startsWith('http://') && !newUrl.startsWith('https://')) {
                 newUrl = 'https://' + newUrl;
@@ -968,13 +992,14 @@
 
             shortcut.name = newName;
             shortcut.url = newUrl;
+            shortcut.logo = newLogo;
 
             closeEditModal();
             saveAndRender();
         }
 
         function saveAndRender() {
-            localStorage.setItem('aesthetic_shortcuts_v7', JSON.stringify(shortcuts));
+            localStorage.setItem('aesthetic_shortcuts_v8', JSON.stringify(shortcuts));
             renderShortcuts();
         }
 
