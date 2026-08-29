@@ -1,344 +1,424 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Máster de Speedcubing | Domina el Cubo de Rubik</title>
+    <title>Aesthetic Launchpad</title>
     <style>
-        :root {
-            --primary: #ff3366;
-            --secondary: #00f0ff;
-            --dark: #0b0b10;
-            --dark-card: #151522;
-            --light: #ffffff;
-            --gray: #a0a0c0;
+        /* --- VARIABLES DE TEMAS --- */
+        :root[data-theme="dark"] {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.4);
+            --card-hover: rgba(51, 65, 85, 0.8);
         }
 
+        :root[data-theme="neon"] {
+            --bg-gradient: linear-gradient(135deg, #050505 0%, #12001a 100%);
+            --glass-bg: rgba(20, 20, 30, 0.75);
+            --glass-border: rgba(236, 72, 153, 0.3);
+            --text-main: #fff;
+            --text-muted: #cbd5e1;
+            --accent: #ec4899;
+            --accent-glow: rgba(236, 72, 153, 0.6);
+            --card-hover: rgba(35, 30, 50, 0.9);
+        }
+
+        :root[data-theme="minimal"] {
+            --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent: #0284c7;
+            --accent-glow: rgba(2, 132, 199, 0.3);
+            --card-hover: rgba(255, 255, 255, 1);
+        }
+
+        :root[data-theme="sunset"] {
+            --bg-gradient: linear-gradient(135deg, #2a0845 0%, #6441a5 100%);
+            --glass-bg: rgba(50, 30, 70, 0.65);
+            --glass-border: rgba(255, 150, 150, 0.2);
+            --text-main: #fff5f5;
+            --text-muted: #f3cbd3;
+            --accent: #ff758c;
+            --accent-glow: rgba(255, 117, 140, 0.5);
+            --card-hover: rgba(70, 45, 95, 0.85);
+        }
+
+        /* --- ESTILOS GENERALES --- */
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            user-select: none;
         }
 
         body {
-            background-color: var(--dark);
-            color: var(--light);
-            overflow-x: hidden;
-        }
-
-        /* Banner Principal con Canvas 3D de fondo */
-        #banner-container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            padding-left: 8%;
-            overflow: hidden;
+            padding: 2rem 1rem;
+            transition: background 0.5s ease, color 0.5s ease;
         }
 
-        #webgl-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
+        header {
             width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        .banner-content {
-            position: relative;
-            z-index: 2;
-            max-width: 600px;
-            pointer-events: none; /* Permite que el cursor interactúe con el 3D del fondo si se desea */
-        }
-
-        .banner-content * {
-            pointer-events: auto;
-        }
-
-        .badge {
-            display: inline-block;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
+            max-width: 900px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
         }
 
         h1 {
-            font-size: 3.5rem;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #fff 30%, var(--gray));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 10px var(--accent-glow);
         }
 
-        p {
-            font-size: 1.1rem;
-            color: var(--gray);
-            margin-bottom: 30px;
-            line-height: 1.6;
+        /* Selector de Temas */
+        .theme-selector select {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            outline: none;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
         }
 
-        .btn {
-            display: inline-block;
-            background: var(--primary);
-            color: var(--light);
-            padding: 14px 32px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1rem;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 10px 20px rgba(255, 51, 102, 0.3);
+        .theme-selector select:hover {
+            border-color: var(--accent);
         }
 
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(255, 51, 102, 0.5);
-        }
-
-        /* Secciones de la Página */
-        section {
-            padding: 100px 8%;
-            position: relative;
-            z-index: 2;
-            background: var(--dark);
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 60px;
-        }
-
-        .section-title span {
-            color: var(--secondary);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-
-        .card {
-            background: var(--dark-card);
-            padding: 40px 30px;
+        /* --- FORMULARIO DE ACCESOS --- */
+        .card-form {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(16px);
+            padding: 1.5rem;
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: transform 0.3s, border-color 0.3s;
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--secondary);
+        .card-form input {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--glass-border);
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            color: var(--text-main);
+            outline: none;
+            font-size: 0.95rem;
+            transition: 0.3s;
         }
 
-        .card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: var(--light);
+        :root[data-theme="minimal"] .card-form input {
+            background: rgba(0, 0, 0, 0.04);
         }
 
-        /* Footer */
-        footer {
+        .card-form input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .card-form button {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        .card-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--accent-glow);
+        }
+
+        /* --- GRID DE ACCESOS DIRECTOS --- */
+        .grid-container {
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .shortcut-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 1rem 0.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text-main);
+            position: relative;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s, border-color 0.3s, box-shadow 0.3s;
+            animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .shortcut-card:hover {
+            transform: translateY(-6px) scale(1.03);
+            background: var(--card-hover);
+            border-color: var(--accent);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 15px var(--accent-glow);
+        }
+
+        .shortcut-icon-wrapper {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .shortcut-card img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .shortcut-title {
+            font-size: 0.85rem;
+            font-weight: 500;
             text-align: center;
-            padding: 40px;
-            background: #050508;
-            color: var(--gray);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 0.5rem;
         }
 
-        @media (max-width: 768px) {
-            #banner-container {
-                justify-content: center;
-                padding: 0 5%;
-                text-align: center;
+        /* --- MENÚ CONTEXTUAL PERSONALIZADO --- */
+        #context-menu {
+            display: none;
+            position: absolute;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(16px);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            z-index: 1000;
+            padding: 0.4rem;
+            min-width: 140px;
+            animation: fadeInMenu 0.15s ease-out;
+        }
+
+        .menu-item {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            color: var(--text-main);
+        }
+
+        .menu-item:hover {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .menu-item.delete:hover {
+            background: #ef4444;
+        }
+
+        /* --- ANIMACIONES --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeInMenu {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Responsive para móviles */
+        @media (max-width: 600px) {
+            .card-form {
+                flex-direction: column;
             }
-            h1 { font-size: 2.5rem; }
         }
     </style>
-
-    <!-- Importar Three.js desde CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
-    <!-- Banner con Animación 3D Interactiva al Scroll y Mouse -->
-    <div id="banner-container">
-        <canvas id="webgl-canvas"></canvas>
-        <div class="banner-content">
-            <span class="badge">Curso Definitivo 2026</span>
-            <h1>Conviértete en un Maestro del Speedcubing</h1>
-            <p>Aprende los algoritmos avanzados, reduce tus tiempos de resolución (CFOP) y baja de los 15 segundos con instructores profesionales.</p>
-            <a href="#temario" class="btn">Inscribirme Ahora</a>
+    <header>
+        <h1>Launchpad</h1>
+        <div class="theme-selector">
+            <select id="themeSelect" onchange="changeTheme(this.value)">
+                <option value="dark">Dark Space</option>
+                <option value="neon">Cyber Neon</option>
+                <option value="minimal">Clean Minimal</option>
+                <option value="sunset">Sunset Vibes</option>
+            </select>
         </div>
+    </header>
+
+    <!-- Formulario para añadir -->
+    <div class="card-form">
+        <input type="text" id="siteName" placeholder="Nombre (ej. YouTube)">
+        <input type="text" id="siteUrl" placeholder="Enlace (ej. https://youtube.com)">
+        <button onclick="addShortcut()">Añadir</button>
     </div>
 
-    <!-- Sección de Características -->
-    <section id="temario">
-        <h2 class="section-title">¿Qué aprenderás en el <span>Curso</span>?</h2>
-        <div class="features-grid">
-            <div class="card">
-                <h3>Método Principiante a Intermedio</h3>
-                <p>Domina las capas básicas, movimientos fluidos y comprensión espacial del cubo sin frustraciones.</p>
-            </div>
-            <div class="card">
-                <h3>Sistema CFOP Avanzado</h3>
-                <p>Aprende F2L intuitivo, las 57 OLLs y las 21 PLLs con patrones de memorización rápidos.</p>
-            </div>
-            <div class="card">
-                <h3>Optimización y Dedos (Fingertricks)</h3>
-                <p>Mejora la ergonomía de tus manos para recortar milisegundos valiosos en cada giro.</p>
-            </div>
-        </div>
-    </section>
+    <!-- Contenedor de Botones -->
+    <div class="grid-container" id="gridContainer"></div>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2026 Speedcubing Masterclass. Todos los derechos reservados.</p>
-    </footer>
+    <!-- Menú contextual (Clic Derecho) -->
+    <div id="context-menu">
+        <div class="menu-item" onclick="editShortcut()">Editar</div>
+        <div class="menu-item delete" onclick="deleteShortcut()">Eliminar</div>
+    </div>
 
-    <!-- Script de Three.js y Lógica de Animación 3D Interactiva -->
     <script>
-        // Configuración de la escena 3D con Three.js
-        const container = document.getElementById('banner-container');
-        const canvas = document.getElementById('webgl-canvas');
+        let shortcuts = JSON.parse(localStorage.getItem('aesthetic_shortcuts')) || [];
+        let currentTargetId = null;
 
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        // Cargar tema guardado
+        const savedTheme = localStorage.getItem('aesthetic_theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.getElementById('themeSelect').value = savedTheme;
 
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        function changeTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('aesthetic_theme', theme);
+        }
 
-        camera.position.z = 6;
+        // Renderizar elementos
+        function renderShortcuts() {
+            const container = document.getElementById('gridContainer');
+            container.innerHTML = '';
 
-        // Iluminación
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-        scene.add(ambientLight);
+            shortcuts.forEach(item => {
+                const card = document.createElement('a');
+                card.href = item.url;
+                card.target = "_blank";
+                card.className = 'shortcut-card';
+                card.dataset.id = item.id;
 
-        const pointLight = new THREE.PointLight(0xff3366, 2);
-        pointLight.position.set(5, 5, 5);
-        scene.add(pointLight);
+                // Detección automática del Favicon usando Google S2
+                const domain = new URL(item.url.startsWith('http') ? item.url : `https://${item.url}`).hostname;
+                const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
 
-        const pointLight2 = new THREE.PointLight(0x00f0ff, 2);
-        pointLight2.position.set(-5, -5, -5);
-        scene.add(pointLight2);
+                card.innerHTML = `
+                    <div class="shortcut-icon-wrapper">
+                        <img src="${faviconUrl}" alt="${item.name}" onerror="this.src='https://www.google.com/s2/favicons?domain=example.com&sz=64'">
+                    </div>
+                    <span class="shortcut-title">${item.name}</span>
+                `;
 
-        // Creación del Cubo de Rubik (agrupando cubitos más pequeños)
-        const rubikGroup = new THREE.Group();
-        const cubeSize = 0.92;
-        const spacing = 0.05;
-        const totalSize = cubeSize + spacing;
+                // Evento de clic derecho
+                card.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    currentTargetId = item.id;
+                    const menu = document.getElementById('context-menu');
+                    menu.style.display = 'block';
+                    menu.style.left = `${e.pageX}px`;
+                    menu.style.top = `${e.pageY}px`;
+                });
 
-        // Colores clásicos de Rubik
-        const colors = [
-            0xff3333, // Derecha: Rojo
-            0xff8800, // Izquierda: Naranja
-            -1,       // Arriba (manejado dinámicamente o negro)
-            0xffffff, // Abajo: Blanco
-            0x0051ba, // Frontal: Azul
-            0xffd500  // Trasera: Amarillo
-        ];
+                container.appendChild(card);
+            });
+        }
 
-        // Materiales base oscuros para los huecos internos
-        const blackMaterial = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.5 });
+        // Añadir nuevo acceso
+        function addShortcut() {
+            const nameInput = document.getElementById('siteName');
+            const urlInput = document.getElementById('siteUrl');
 
-        for (let x = -1; x <= 1; x++) {
-            for (let y = -1; y <= 1; y++) {
-                for (let z = -1; z <= 1; z++) {
-                    const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
-                    
-                    // Crear materiales individuales para las caras de cada cubito pequeño
-                    const materials = [
-                        x === 1 ? new THREE.MeshStandardMaterial({ color: 0xff3333, roughness: 0.2 }) : blackMaterial,
-                        x === -1 ? new THREE.MeshStandardMaterial({ color: 0xff8800, roughness: 0.2 }) : blackMaterial,
-                        y === 1 ? new THREE.MeshStandardMaterial({ color: 0xffff33, roughness: 0.2 }) : blackMaterial,
-                        y === -1 ? new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2 }) : blackMaterial,
-                        z === 1 ? new THREE.MeshStandardMaterial({ color: 0x0051ba, roughness: 0.2 }) : blackMaterial,
-                        z === -1 ? new THREE.MeshStandardMaterial({ color: 0x009b48, roughness: 0.2 }) : blackMaterial,
-                    ];
+            let name = nameInput.value.trim();
+            let url = urlInput.value.trim();
 
-                    const smallCube = new THREE.Mesh(geometry, materials);
-                    smallCube.position.set(x * totalSize, y * totalSize, z * totalSize);
-                    rubikGroup.add(smallCube);
-                }
+            if (!name || !url) return alert('Por favor, rellena ambos campos.');
+
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+
+            const newShortcut = {
+                id: Date.now().toString(),
+                name,
+                url
+            };
+
+            shortcuts.push(newShortcut);
+            saveAndRender();
+
+            nameInput.value = '';
+            urlInput.value = '';
+        }
+
+        // Ocultar menú contextual al hacer clic fuera
+        window.addEventListener('click', () => {
+            document.getElementById('context-menu').style.display = 'none';
+        });
+
+        // Eliminar acceso directo
+        function deleteShortcut() {
+            shortcuts = shortcuts.filter(s => s.id !== currentTargetId);
+            saveAndRender();
+        }
+
+        // Editar acceso directo
+        function editShortcut() {
+            const shortcut = shortcuts.find(s => s.id === currentTargetId);
+            if (!shortcut) return;
+
+            const newName = prompt("Edita el nombre:", shortcut.name);
+            const newUrl = prompt("Edita el enlace:", shortcut.url);
+
+            if (newName !== null && newUrl !== null) {
+                shortcut.name = newName.trim();
+                shortcut.url = newUrl.trim().startsWith('http') ? newUrl.trim() : 'https://' + newUrl.trim();
+                saveAndRender();
             }
         }
 
-        scene.add(rubikGroup);
-
-        // Posicionar el cubo hacia la derecha de la pantalla en pantallas grandes
-        function updateCubePosition() {
-            if (window.innerWidth > 768) {
-                rubikGroup.position.x = 2.2;
-            } else {
-                rubikGroup.position.x = 0;
-                rubikGroup.position.y = -1.5;
-            }
-        }
-        updateCubePosition();
-
-        // Control del movimiento del mouse (que te siga suavemente)
-        let mouseX = 0;
-        let mouseY = 0;
-        let targetRotationX = 0;
-        let targetRotationY = 0;
-
-        document.addEventListener('mousemove', (event) => {
-            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-        });
-
-        // Control del Scroll para reproducir la animación de giro/resolución del cubo
-        let scrollProgress = 0;
-        window.addEventListener('scroll', () => {
-            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-            scrollProgress = window.scrollY / maxScroll; // Valor de 0 a 1 según bajas
-        });
-
-        // Loop de Renderizado y Animación
-        const clock = new THREE.Clock();
-
-        function animate() {
-            requestAnimationFrame(animate);
-
-            const elapsedTime = clock.getElapsedTime();
-
-            // Interpolar rotación según el mouse para un efecto orgánico de seguimiento
-            targetRotationX = mouseY * 0.6;
-            targetRotationY = mouseX * 0.6;
-
-            // Añadir rotación extra impulsada por el scroll del usuario
-            const scrollAnimationSpeed = scrollProgress * Math.PI * 8;
-
-            rubikGroup.rotation.x += (targetRotationX + scrollAnimationSpeed * 0.5 - rubikGroup.rotation.x) * 0.05;
-            rubikGroup.rotation.y += (targetRotationY + scrollAnimationSpeed - rubikGroup.rotation.y) * 0.05;
-            
-            // Ligero flotar constante
-            rubikGroup.position.y = (window.innerWidth > 768 ? 0 : -1.5) + Math.sin(elapsedTime * 2) * 0.1;
-
-            renderer.render(scene, camera);
+        function saveAndRender() {
+            localStorage.setItem('aesthetic_shortcuts', JSON.stringify(shortcuts));
+            renderShortcuts();
         }
 
-        animate();
-
-        // Ajuste responsivo de la ventana
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            updateCubePosition();
-        });
+        // Inicializar
+        renderShortcuts();
     </script>
 </body>
 </html>
