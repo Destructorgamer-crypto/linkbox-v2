@@ -870,7 +870,7 @@
                 card.innerHTML = `
                     <div class="shortcut-icon-wrapper">
                         <img src="${iconSrc}" alt="${item.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <span class="shortcut-initial"></span>
+                        <span class="shortcut-initial">${firstLetter}</span>
                     </div>
                     <span class="shortcut-title">${item.name}</span>
                 `;
