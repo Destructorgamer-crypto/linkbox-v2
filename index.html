@@ -335,7 +335,6 @@
             width: 100%;
             max-width: 900px;
             display: flex;
-            flex-wrap: wrap;
             gap: 1rem;
             margin-bottom: 2.5rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
@@ -345,7 +344,6 @@
 
         .card-form input {
             flex: 1;
-            min-width: 200px;
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             padding: 0.75rem 1rem;
@@ -706,11 +704,10 @@
         </div>
     </header>
 
-    <!-- Formulario para añadir con opción de Logo personalizado opcional -->
+    <!-- Formulario limpio (Nombre y Enlace) -->
     <div class="card-form">
         <input type="text" id="siteName" placeholder="Nombre (ej. Mi Web)">
         <input type="text" id="siteUrl" placeholder="Enlace (ej. https://ejemplo.com)">
-        <input type="text" id="siteLogo" placeholder="Enlace de logo opcional (opcional)">
         <button onclick="addShortcut()">Añadir</button>
     </div>
 
@@ -721,7 +718,7 @@
         <div class="menu-item delete" onclick="deleteShortcut()">Eliminar</div>
     </div>
 
-    <!-- Modal de Edición de Acceso Directo -->
+    <!-- Modal de Edición (Incluye campo de logo opcional) -->
     <div id="edit-modal" class="modal-overlay">
         <div class="settings-modal-box">
             <h3>Editar Acceso Directo</h3>
@@ -766,7 +763,7 @@
     </div>
 
     <script>
-        let shortcuts = JSON.parse(localStorage.getItem('aesthetic_shortcuts_v8')) || [];
+        let shortcuts = JSON.parse(localStorage.getItem('aesthetic_shortcuts_v9')) || [];
         let currentTargetId = null;
         let draggedIndex = null;
 
@@ -828,7 +825,7 @@
         }
 
         function updateCustomization() {
-            const radius = document.getElementById('radiusSetting').value;
+            const radius = document.getElementById('radiusSetting.value') || document.getElementById('radiusSetting').value;
             const sizeVal = document.getElementById('sizeSetting').value + 'px';
 
             document.documentElement.style.setProperty('--card-radius', radius);
@@ -852,7 +849,6 @@
                 card.draggable = true;
                 card.style.animationDelay = `${index * 0.04}s`;
 
-                // Determinar la imagen del logo (o buscar favicon automático)
                 let iconSrc = item.logo;
                 if (!iconSrc || iconSrc.trim() === "") {
                     const domain = new URL(item.url.startsWith('http') ? item.url : `https://` + item.url).hostname;
@@ -869,7 +865,6 @@
                     <span class="shortcut-title">${item.name}</span>
                 `;
 
-                // Eventos Drag and Drop
                 card.addEventListener('dragstart', (e) => {
                     draggedIndex = index;
                     setTimeout(() => card.classList.add('dragging'), 0);
@@ -922,13 +917,11 @@
         function addShortcut() {
             const nameInput = document.getElementById('siteName');
             const urlInput = document.getElementById('siteUrl');
-            const logoInput = document.getElementById('siteLogo');
 
             let name = nameInput.value.trim();
             let url = urlInput.value.trim();
-            let logo = logoInput.value.trim();
 
-            if (!name || !url) return alert('Por favor, rellena al menos el Nombre y el Enlace.');
+            if (!name || !url) return alert('Por favor, rellena el Nombre y el Enlace.');
 
             if (!url.startsWith('http://') && !url.startsWith('https://')) {
                 url = 'https://' + url;
@@ -938,7 +931,7 @@
                 id: Date.now().toString(),
                 name,
                 url,
-                logo
+                logo: ""
             };
 
             shortcuts.push(newShortcut);
@@ -946,7 +939,6 @@
 
             nameInput.value = '';
             urlInput.value = '';
-            logoInput.value = '';
         }
 
         window.addEventListener('click', (e) => {
@@ -999,7 +991,7 @@
         }
 
         function saveAndRender() {
-            localStorage.setItem('aesthetic_shortcuts_v8', JSON.stringify(shortcuts));
+            localStorage.setItem('aesthetic_shortcuts_v9', JSON.stringify(shortcuts));
             renderShortcuts();
         }
 
