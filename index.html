@@ -14,7 +14,6 @@
             --glow-effect: 0 15px 30px rgba(0, 0, 0, 0.25), 0 0 20px var(--accent-glow);
         }
 
-        /* Desactivar neón si se prefiere plano */
         :root[data-neon="off"] {
             --glow-effect: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
@@ -22,17 +21,17 @@
         /* Tema: Dark Space */
         :root[data-theme="dark"][data-mode="dark"] {
             --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            --glass-bg: rgba(30, 41, 59, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(30, 41, 59, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.12);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --accent: #6366f1;
             --accent-glow: rgba(99, 102, 241, 0.4);
-            --card-hover: rgba(51, 65, 85, 0.85);
+            --card-hover: rgba(51, 65, 85, 0.9);
         }
         :root[data-theme="dark"][data-mode="light"] {
             --bg-gradient: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
-            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-bg: rgba(255, 255, 255, 0.9);
             --glass-border: rgba(0, 0, 0, 0.08);
             --text-main: #0f172a;
             --text-muted: #475569;
@@ -44,18 +43,18 @@
         /* Tema: Cyber Neon */
         :root[data-theme="neon"][data-mode="dark"] {
             --bg-gradient: linear-gradient(135deg, #050505 0%, #12001a 100%);
-            --glass-bg: rgba(20, 20, 30, 0.8);
-            --glass-border: rgba(236, 72, 153, 0.3);
+            --glass-bg: rgba(20, 20, 30, 0.85);
+            --glass-border: rgba(236, 72, 153, 0.35);
             --text-main: #fff;
             --text-muted: #cbd5e1;
             --accent: #ec4899;
             --accent-glow: rgba(236, 72, 153, 0.6);
-            --card-hover: rgba(35, 30, 50, 0.9);
+            --card-hover: rgba(35, 30, 50, 0.95);
         }
         :root[data-theme="neon"][data-mode="light"] {
             --bg-gradient: linear-gradient(135deg, #fce7f3 0%, #fae8ff 100%);
-            --glass-bg: rgba(255, 255, 255, 0.9);
-            --glass-border: rgba(236, 72, 153, 0.2);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(236, 72, 153, 0.25);
             --text-main: #701a75;
             --text-muted: #86198f;
             --accent: #db2777;
@@ -66,18 +65,18 @@
         /* Tema: Clean Minimal */
         :root[data-theme="minimal"][data-mode="dark"] {
             --bg-gradient: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
-            --glass-bg: rgba(30, 30, 30, 0.8);
-            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-bg: rgba(30, 30, 30, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.15);
             --text-main: #e5e5e5;
             --text-muted: #a3a3a3;
             --accent: #262626;
             --accent-glow: rgba(255, 255, 255, 0.15);
-            --card-hover: rgba(45, 45, 45, 0.9);
+            --card-hover: rgba(45, 45, 45, 0.95);
         }
         :root[data-theme="minimal"][data-mode="light"] {
             --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             --glass-bg: rgba(255, 255, 255, 0.95);
-            --glass-border: rgba(0, 0, 0, 0.06);
+            --glass-border: rgba(0, 0, 0, 0.08);
             --text-main: #0f172a;
             --text-muted: #64748b;
             --accent: #0284c7;
@@ -88,18 +87,18 @@
         /* Tema: Sunset Vibes */
         :root[data-theme="sunset"][data-mode="dark"] {
             --bg-gradient: linear-gradient(135deg, #2a0845 0%, #6441a5 100%);
-            --glass-bg: rgba(50, 30, 70, 0.75);
-            --glass-border: rgba(255, 150, 150, 0.2);
+            --glass-bg: rgba(50, 30, 70, 0.8);
+            --glass-border: rgba(255, 150, 150, 0.25);
             --text-main: #fff5f5;
             --text-muted: #f3cbd3;
             --accent: #ff758c;
             --accent-glow: rgba(255, 117, 140, 0.5);
-            --card-hover: rgba(70, 45, 95, 0.85);
+            --card-hover: rgba(70, 45, 95, 0.9);
         }
         :root[data-theme="sunset"][data-mode="light"] {
             --bg-gradient: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 100%);
-            --glass-bg: rgba(255, 255, 255, 0.9);
-            --glass-border: rgba(255, 117, 140, 0.3);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(255, 117, 140, 0.35);
             --text-main: #581c87;
             --text-muted: #7e22ce;
             --accent: #e11d48;
@@ -347,6 +346,7 @@
             padding: 0.4rem;
             min-width: 140px;
             animation: popInMenu 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            color: var(--text-main);
         }
 
         .menu-item {
@@ -368,7 +368,7 @@
             background: #ef4444;
         }
 
-        /* --- MODALES GENERALES --- */
+        /* --- MODALES GENERALES (Reactivos a variables de tema) --- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -399,6 +399,7 @@
 
         .modal-content h3 {
             font-size: 1.25rem;
+            color: var(--text-main);
         }
 
         .modal-content input, .modal-content select {
@@ -411,11 +412,16 @@
             font-size: 0.95rem;
         }
 
+        :root[data-mode="light"] .modal-content input, 
+        :root[data-mode="light"] .modal-content select {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
         .modal-content input::placeholder {
             color: var(--text-muted);
         }
 
-        .modal-content input:focus {
+        .modal-content input:focus, .modal-content select:focus {
             border-color: var(--accent);
         }
 
@@ -578,7 +584,7 @@
     </div>
 
     <script>
-        let shortcuts = JSON.parse(localStorage.getItem('aesthetic_shortcuts_v4')) || [];
+        let shortcuts = JSON.parse(localStorage.getItem('aesthetic_shortcuts_v5')) || [];
         let currentTargetId = null;
 
         // Cargar preferencias guardadas
@@ -626,9 +632,10 @@
             const dynamicFavicon = document.getElementById('dynamic-favicon');
             
             if (url && url.trim() !== '') {
-                headerImg.src = url;
+                let formattedUrl = url.trim();
+                headerImg.src = formattedUrl;
                 headerImg.style.display = 'inline-block';
-                dynamicFavicon.href = url;
+                dynamicFavicon.href = formattedUrl;
             } else {
                 headerImg.style.display = 'none';
                 dynamicFavicon.href = 'https://www.google.com/s2/favicons?domain=github.com&sz=64';
@@ -776,7 +783,7 @@
         }
 
         function saveAndRender() {
-            localStorage.setItem('aesthetic_shortcuts_v4', JSON.stringify(shortcuts));
+            localStorage.setItem('aesthetic_shortcuts_v5', JSON.stringify(shortcuts));
             renderShortcuts();
         }
 
