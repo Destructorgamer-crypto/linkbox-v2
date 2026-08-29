@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-main-title">Aesthetic Launchpad</title>
-    <!-- Favicon dinámico predeterminado -->
-    <link id="dynamic-favicon" rel="icon" href="https://www.google.com/s2/favicons?domain=github.com&sz=64">
+    <!-- Favicon predeterminado fijo -->
+    <link rel="icon" href="https://www.google.com/s2/favicons?domain=github.com&sz=64">
     <style>
         /* --- VARIABLES DE TEMAS Y PERSONALIZACIÓN DINÁMICA --- */
         :root {
@@ -143,16 +143,6 @@
             text-shadow: 0 2px 10px var(--accent-glow);
             cursor: pointer;
             transition: opacity 0.2s, transform 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        h1 img {
-            width: 32px;
-            height: 32px;
-            object-fit: contain;
-            border-radius: 6px;
         }
 
         h1:hover {
@@ -207,12 +197,11 @@
             margin-bottom: 2.5rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            transition: border-radius var(--transition-speed);
         }
 
         .card-form input {
             flex: 1;
-            background: rgba(0, 0, 0, 0.05);
+            background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             padding: 0.75rem 1rem;
             border-radius: 12px;
@@ -278,19 +267,6 @@
             opacity: 0;
         }
 
-        .shortcut-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
-            transition: 0.5s;
-        }
-
-        .shortcut-card:hover::before {
-            left: 100%;
-        }
-
         .shortcut-card:hover {
             transform: translateY(-8px) scale(1.05);
             background: var(--card-hover);
@@ -301,13 +277,13 @@
         .shortcut-icon-wrapper {
             width: 52px;
             height: 52px;
-            background: rgba(255, 255, 255, 0.06);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
             border-radius: calc(var(--card-radius) - 6px);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
             transition: transform 0.3s ease;
         }
 
@@ -345,8 +321,8 @@
             z-index: 1000;
             padding: 0.4rem;
             min-width: 140px;
-            animation: popInMenu 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             color: var(--text-main);
+            animation: popInMenu 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .menu-item {
@@ -368,12 +344,12 @@
             background: #ef4444;
         }
 
-        /* --- MODALES GENERALES (Reactivos a variables de tema) --- */
+        /* --- ZONA DE AJUSTES (MODAL REHECHO DESDE CERO) --- */
         .modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
             backdrop-filter: blur(8px);
             z-index: 2000;
             align-items: center;
@@ -381,88 +357,82 @@
             animation: fadeIn 0.25s ease;
         }
 
-        .modal-content {
+        .settings-modal-box {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            backdrop-filter: blur(25px);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             padding: 2rem;
             border-radius: var(--card-radius);
             width: 90%;
             max-width: 420px;
             display: flex;
             flex-direction: column;
-            gap: 1.2rem;
+            gap: 1.5rem;
             box-shadow: 0 25px 50px rgba(0,0,0,0.4);
             animation: scaleUpModal 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             color: var(--text-main);
         }
 
-        .modal-content h3 {
-            font-size: 1.25rem;
+        .settings-modal-box h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
             color: var(--text-main);
+            letter-spacing: -0.3px;
         }
 
-        .modal-content input, .modal-content select {
-            background: rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--glass-border);
-            padding: 0.75rem 1rem;
-            border-radius: 12px;
-            color: var(--text-main);
-            outline: none;
-            font-size: 0.95rem;
-        }
-
-        :root[data-mode="light"] .modal-content input, 
-        :root[data-mode="light"] .modal-content select {
-            background: rgba(0, 0, 0, 0.03);
-        }
-
-        .modal-content input::placeholder {
-            color: var(--text-muted);
-        }
-
-        .modal-content input:focus, .modal-content select:focus {
-            border-color: var(--accent);
-        }
-
-        .setting-group {
+        .settings-field-group {
             display: flex;
             flex-direction: column;
-            gap: 0.4rem;
+            gap: 0.5rem;
+        }
+
+        .settings-field-group label {
             font-size: 0.9rem;
+            font-weight: 500;
             color: var(--text-muted);
         }
 
-        .modal-buttons {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: 0.5rem;
-        }
-
-        .modal-buttons button {
-            flex: 1;
-            padding: 0.75rem;
+        .settings-field-group select {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 0.75rem 1rem;
             border-radius: 12px;
-            border: none;
-            font-weight: 600;
+            outline: none;
+            font-size: 0.95rem;
             cursor: pointer;
-            transition: 0.2s;
+            backdrop-filter: blur(10px);
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        .btn-save {
-            background: var(--accent);
-            color: #fff;
-            box-shadow: 0 4px 12px var(--accent-glow);
+        .settings-field-group select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
         }
 
-        .btn-cancel {
-            background: rgba(128,128,128,0.2);
+        .settings-field-group select option {
+            background-color: var(--glass-bg);
             color: var(--text-main);
         }
 
-        .modal-buttons button:hover {
+        .settings-action-btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px var(--accent-glow);
+            text-align: center;
+        }
+
+        .settings-action-btn:hover {
             opacity: 0.9;
             transform: translateY(-2px);
+            box-shadow: 0 6px 16px var(--accent-glow);
         }
 
         /* --- ANIMACIONES EXTRA --- */
@@ -507,7 +477,6 @@
 
     <header>
         <h1 id="mainTitleDisplay" onclick="changeAppTitle()" title="Haz clic para editar el título">
-            <img id="headerFavicon" src="" alt="Logo" style="display: none;">
             <span id="titleText">Aesthetic Launchpad</span>
         </h1>
         <div class="header-controls">
@@ -542,22 +511,28 @@
 
     <!-- Modal de Edición de Acceso Directo -->
     <div id="edit-modal" class="modal-overlay">
-        <div class="modal-content">
+        <div class="settings-modal-box">
             <h3>Editar Acceso Directo</h3>
-            <input type="text" id="editName" placeholder="Nuevo nombre personalizado">
-            <input type="text" id="editUrl" placeholder="Nuevo enlace">
-            <div class="modal-buttons">
-                <button class="btn-cancel" onclick="closeEditModal()">Cancelar</button>
-                <button class="btn-save" onclick="saveEdit()">Guardar</button>
+            <div class="settings-field-group">
+                <label>Nombre</label>
+                <input type="text" id="editName" placeholder="Nuevo nombre">
+            </div>
+            <div class="settings-field-group">
+                <label>Enlace</label>
+                <input type="text" id="editUrl" placeholder="Nuevo enlace">
+            </div>
+            <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem;">
+                <button class="settings-action-btn" style="background: rgba(128,128,128,0.2); color: var(--text-main);" onclick="closeEditModal()">Cancelar</button>
+                <button class="settings-action-btn" onclick="saveEdit()">Guardar</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal de Personalización Avanzada -->
+    <!-- Zona de Ajustes Rehecha desde Cero -->
     <div id="settings-modal" class="modal-overlay">
-        <div class="modal-content">
+        <div class="settings-modal-box">
             <h3>Ajustes Aesthetic</h3>
-            <div class="setting-group">
+            <div class="settings-field-group">
                 <label>Redondeo de Tarjetas (Bordes)</label>
                 <select id="radiusSetting" onchange="updateCustomization()">
                     <option value="12px">Sutil (12px)</option>
@@ -566,25 +541,19 @@
                     <option value="50px">Cápsula (50px)</option>
                 </select>
             </div>
-            <div class="setting-group">
-                <label>Efecto de Neón en Tarjetas</label>
+            <div class="settings-field-group">
+                <label>Efectos de Neón Activos</label>
                 <select id="neonSetting" onchange="updateCustomization()">
                     <option value="on">Activado (Brillo activo)</option>
                     <option value="off">Desactivado (Plano)</option>
                 </select>
             </div>
-            <div class="setting-group">
-                <label>Enlace del Logotipo Personalizado (Favicon)</label>
-                <input type="text" id="customFaviconInput" placeholder="https://ejemplo.com/logo.png" oninput="updateCustomization()">
-            </div>
-            <div class="modal-buttons">
-                <button class="btn-save" onclick="closeSettingsModal()">¡Listo!</button>
-            </div>
+            <button class="settings-action-btn" onclick="closeSettingsModal()">¡Listo!</button>
         </div>
     </div>
 
     <script>
-        let shortcuts = JSON.parse(localStorage.getItem('aesthetic_shortcuts_v5')) || [];
+        let shortcuts = JSON.parse(localStorage.getItem('aesthetic_shortcuts_v6')) || [];
         let currentTargetId = null;
 
         // Cargar preferencias guardadas
@@ -593,7 +562,6 @@
         const savedTitle = localStorage.getItem('aesthetic_app_title') || 'Aesthetic Launchpad';
         const savedRadius = localStorage.getItem('aesthetic_radius') || '20px';
         const savedNeon = localStorage.getItem('aesthetic_neon') || 'on';
-        const savedFavicon = localStorage.getItem('aesthetic_custom_favicon') || '';
 
         document.documentElement.setAttribute('data-theme', savedTheme);
         document.documentElement.setAttribute('data-mode', savedMode);
@@ -605,9 +573,7 @@
         document.getElementById('page-main-title').textContent = savedTitle;
         document.getElementById('radiusSetting').value = savedRadius;
         document.getElementById('neonSetting').value = savedNeon;
-        document.getElementById('customFaviconInput').value = savedFavicon;
 
-        applyFavicon(savedFavicon);
         updateModeButtonIcon(savedMode);
 
         function changeTheme(theme) {
@@ -625,21 +591,6 @@
 
         function updateModeButtonIcon(mode) {
             document.getElementById('modeBtn').textContent = mode === 'dark' ? '🌙' : '☀️';
-        }
-
-        function applyFavicon(url) {
-            const headerImg = document.getElementById('headerFavicon');
-            const dynamicFavicon = document.getElementById('dynamic-favicon');
-            
-            if (url && url.trim() !== '') {
-                let formattedUrl = url.trim();
-                headerImg.src = formattedUrl;
-                headerImg.style.display = 'inline-block';
-                dynamicFavicon.href = formattedUrl;
-            } else {
-                headerImg.style.display = 'none';
-                dynamicFavicon.href = 'https://www.google.com/s2/favicons?domain=github.com&sz=64';
-            }
         }
 
         function changeAppTitle() {
@@ -663,16 +614,12 @@
         function updateCustomization() {
             const radius = document.getElementById('radiusSetting').value;
             const neon = document.getElementById('neonSetting').value;
-            const customFavicon = document.getElementById('customFaviconInput').value.trim();
 
             document.documentElement.style.setProperty('--card-radius', radius);
             document.documentElement.setAttribute('data-neon', neon);
 
             localStorage.setItem('aesthetic_radius', radius);
             localStorage.setItem('aesthetic_neon', neon);
-            localStorage.setItem('aesthetic_custom_favicon', customFavicon);
-
-            applyFavicon(customFavicon);
         }
 
         function renderShortcuts() {
@@ -783,7 +730,7 @@
         }
 
         function saveAndRender() {
-            localStorage.setItem('aesthetic_shortcuts_v5', JSON.stringify(shortcuts));
+            localStorage.setItem('aesthetic_shortcuts_v6', JSON.stringify(shortcuts));
             renderShortcuts();
         }
 
