@@ -4,18 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-main-title">Aesthetic Launchpad</title>
+    <!-- Favicon dinámico predeterminado -->
+    <link id="dynamic-favicon" rel="icon" href="https://www.google.com/s2/favicons?domain=github.com&sz=64">
     <style>
         /* --- VARIABLES DE TEMAS Y PERSONALIZACIÓN DINÁMICA --- */
         :root {
             --transition-speed: 0.4s;
             --card-radius: 20px;
-            --glass-blur: 16px;
+            --glow-effect: 0 15px 30px rgba(0, 0, 0, 0.25), 0 0 20px var(--accent-glow);
+        }
+
+        /* Desactivar neón si se prefiere plano */
+        :root[data-neon="off"] {
+            --glow-effect: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
 
         /* Tema: Dark Space */
         :root[data-theme="dark"][data-mode="dark"] {
             --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-bg: rgba(30, 41, 59, 0.75);
             --glass-border: rgba(255, 255, 255, 0.1);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
@@ -25,7 +32,7 @@
         }
         :root[data-theme="dark"][data-mode="light"] {
             --bg-gradient: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
-            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-bg: rgba(255, 255, 255, 0.85);
             --glass-border: rgba(0, 0, 0, 0.08);
             --text-main: #0f172a;
             --text-muted: #475569;
@@ -37,7 +44,7 @@
         /* Tema: Cyber Neon */
         :root[data-theme="neon"][data-mode="dark"] {
             --bg-gradient: linear-gradient(135deg, #050505 0%, #12001a 100%);
-            --glass-bg: rgba(20, 20, 30, 0.75);
+            --glass-bg: rgba(20, 20, 30, 0.8);
             --glass-border: rgba(236, 72, 153, 0.3);
             --text-main: #fff;
             --text-muted: #cbd5e1;
@@ -47,7 +54,7 @@
         }
         :root[data-theme="neon"][data-mode="light"] {
             --bg-gradient: linear-gradient(135deg, #fce7f3 0%, #fae8ff 100%);
-            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-bg: rgba(255, 255, 255, 0.9);
             --glass-border: rgba(236, 72, 153, 0.2);
             --text-main: #701a75;
             --text-muted: #86198f;
@@ -59,7 +66,7 @@
         /* Tema: Clean Minimal */
         :root[data-theme="minimal"][data-mode="dark"] {
             --bg-gradient: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
-            --glass-bg: rgba(30, 30, 30, 0.75);
+            --glass-bg: rgba(30, 30, 30, 0.8);
             --glass-border: rgba(255, 255, 255, 0.12);
             --text-main: #e5e5e5;
             --text-muted: #a3a3a3;
@@ -69,7 +76,7 @@
         }
         :root[data-theme="minimal"][data-mode="light"] {
             --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-bg: rgba(255, 255, 255, 0.95);
             --glass-border: rgba(0, 0, 0, 0.06);
             --text-main: #0f172a;
             --text-muted: #64748b;
@@ -81,7 +88,7 @@
         /* Tema: Sunset Vibes */
         :root[data-theme="sunset"][data-mode="dark"] {
             --bg-gradient: linear-gradient(135deg, #2a0845 0%, #6441a5 100%);
-            --glass-bg: rgba(50, 30, 70, 0.65);
+            --glass-bg: rgba(50, 30, 70, 0.75);
             --glass-border: rgba(255, 150, 150, 0.2);
             --text-main: #fff5f5;
             --text-muted: #f3cbd3;
@@ -91,7 +98,7 @@
         }
         :root[data-theme="sunset"][data-mode="light"] {
             --bg-gradient: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 100%);
-            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-bg: rgba(255, 255, 255, 0.9);
             --glass-border: rgba(255, 117, 140, 0.3);
             --text-main: #581c87;
             --text-muted: #7e22ce;
@@ -137,23 +144,21 @@
             text-shadow: 0 2px 10px var(--accent-glow);
             cursor: pointer;
             transition: opacity 0.2s, transform 0.2s;
-            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h1 img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            border-radius: 6px;
         }
 
         h1:hover {
             opacity: 0.85;
             transform: scale(1.01);
-        }
-
-        h1::after {
-            content: ' ✏️';
-            font-size: 1rem;
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-
-        h1:hover::after {
-            opacity: 1;
         }
 
         .header-controls {
@@ -170,13 +175,13 @@
             border-radius: 12px;
             outline: none;
             cursor: pointer;
-            backdrop-filter: blur(var(--glass-blur));
+            backdrop-filter: blur(16px);
             transition: 0.3s;
         }
 
         .theme-selector select:hover, .control-btn:hover {
             border-color: var(--accent);
-            transform: translateY(-2px);
+            transform: translateY(-2px) scale(1.03);
         }
 
         .control-btn {
@@ -189,11 +194,11 @@
             padding: 0;
         }
 
-        /* --- FORMULARIO CON ANIMACIÓN --- */
+        /* --- FORMULARIO --- */
         .card-form {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            backdrop-filter: blur(var(--glass-blur));
+            backdrop-filter: blur(16px);
             padding: 1.5rem;
             border-radius: var(--card-radius);
             width: 100%;
@@ -245,7 +250,7 @@
             box-shadow: 0 6px 20px var(--accent-glow);
         }
 
-        /* --- GRID DE ACCESOS DIRECTOS --- */
+        /* --- GRID DE ACCESOS --- */
         .grid-container {
             width: 100%;
             max-width: 900px;
@@ -257,7 +262,7 @@
         .shortcut-card {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            backdrop-filter: blur(var(--glass-blur));
+            backdrop-filter: blur(16px);
             border-radius: var(--card-radius);
             padding: 1.1rem 0.5rem;
             display: flex;
@@ -269,17 +274,17 @@
             color: var(--text-main);
             position: relative;
             overflow: hidden;
-            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s, border-color 0.3s, box-shadow 0.3s, border-radius var(--transition-speed);
-            animation: bounceIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s, border-color 0.3s, box-shadow 0.3s;
+            animation: cardPopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
         }
 
-        /* Efecto de brillo interior fluido al pasar el ratón */
         .shortcut-card::before {
             content: '';
             position: absolute;
             top: 0; left: -100%;
             width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
             transition: 0.5s;
         }
 
@@ -291,7 +296,7 @@
             transform: translateY(-8px) scale(1.05);
             background: var(--card-hover);
             border-color: var(--accent);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25), 0 0 20px var(--accent-glow);
+            box-shadow: var(--glow-effect);
         }
 
         .shortcut-icon-wrapper {
@@ -308,7 +313,7 @@
         }
 
         .shortcut-card:hover .shortcut-icon-wrapper {
-            transform: rotate(5deg) scale(1.1);
+            transform: rotate(6deg) scale(1.12);
         }
 
         .shortcut-card img {
@@ -335,9 +340,9 @@
             position: absolute;
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            backdrop-filter: blur(var(--glass-blur));
+            backdrop-filter: blur(20px);
             border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             z-index: 1000;
             padding: 0.4rem;
             min-width: 140px;
@@ -369,7 +374,7 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(6px);
+            backdrop-filter: blur(8px);
             z-index: 2000;
             align-items: center;
             justify-content: center;
@@ -379,16 +384,17 @@
         .modal-content {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            backdrop-filter: blur(24px);
+            backdrop-filter: blur(25px);
             padding: 2rem;
             border-radius: var(--card-radius);
             width: 90%;
-            max-width: 400px;
+            max-width: 420px;
             display: flex;
             flex-direction: column;
             gap: 1.2rem;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.35);
-            animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+            animation: scaleUpModal 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            color: var(--text-main);
         }
 
         .modal-content h3 {
@@ -403,6 +409,10 @@
             color: var(--text-main);
             outline: none;
             font-size: 0.95rem;
+        }
+
+        .modal-content input::placeholder {
+            color: var(--text-muted);
         }
 
         .modal-content input:focus {
@@ -451,18 +461,18 @@
 
         /* --- ANIMACIONES EXTRA --- */
         @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
+            from { opacity: 0; transform: translateY(-25px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.95); translateY(-10px); }
+            from { opacity: 0; transform: scale(0.92) translateY(-10px); }
             to { opacity: 1; transform: scale(1); translateY(0); }
         }
 
-        @keyframes bounceIn {
-            from { opacity: 0; transform: scale(0.7); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes cardPopIn {
+            0% { opacity: 0; transform: scale(0.7) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         @keyframes popInMenu {
@@ -475,9 +485,9 @@
             to { opacity: 1; }
         }
 
-        @keyframes scaleUp {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes scaleUpModal {
+            from { opacity: 0; transform: scale(0.85) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         @media (max-width: 600px) {
@@ -490,7 +500,10 @@
 <body>
 
     <header>
-        <h1 id="mainTitleDisplay" onclick="changeAppTitle()" title="Haz doble clic o pulsa para editar el título">Aesthetic Launchpad</h1>
+        <h1 id="mainTitleDisplay" onclick="changeAppTitle()" title="Haz clic para editar el título">
+            <img id="headerFavicon" src="" alt="Logo" style="display: none;">
+            <span id="titleText">Aesthetic Launchpad</span>
+        </h1>
         <div class="header-controls">
             <div class="theme-selector">
                 <select id="themeSelect" onchange="changeTheme(this.value)">
@@ -548,12 +561,15 @@
                 </select>
             </div>
             <div class="setting-group">
-                <label>Efecto Glassmorphism (Desenfoque)</label>
-                <select id="blurSetting" onchange="updateCustomization()">
-                    <option value="8px">Ligero (8px)</option>
-                    <option value="16px">Estándar (16px)</option>
-                    <option value="25px">Intenso (25px)</option>
+                <label>Efecto de Neón en Tarjetas</label>
+                <select id="neonSetting" onchange="updateCustomization()">
+                    <option value="on">Activado (Brillo activo)</option>
+                    <option value="off">Desactivado (Plano)</option>
                 </select>
+            </div>
+            <div class="setting-group">
+                <label>Enlace del Logotipo Personalizado (Favicon)</label>
+                <input type="text" id="customFaviconInput" placeholder="https://ejemplo.com/logo.png" oninput="updateCustomization()">
             </div>
             <div class="modal-buttons">
                 <button class="btn-save" onclick="closeSettingsModal()">¡Listo!</button>
@@ -562,27 +578,30 @@
     </div>
 
     <script>
-        let shortcuts = JSON.parse(localStorage.getItem('aesthetic_shortcuts_ultimate')) || [];
+        let shortcuts = JSON.parse(localStorage.getItem('aesthetic_shortcuts_v4')) || [];
         let currentTargetId = null;
 
-        // Cargar datos de personalización guardados
+        // Cargar preferencias guardadas
         const savedTheme = localStorage.getItem('aesthetic_theme') || 'dark';
         const savedMode = localStorage.getItem('aesthetic_mode') || 'dark';
         const savedTitle = localStorage.getItem('aesthetic_app_title') || 'Aesthetic Launchpad';
         const savedRadius = localStorage.getItem('aesthetic_radius') || '20px';
-        const savedBlur = localStorage.getItem('aesthetic_blur') || '16px';
+        const savedNeon = localStorage.getItem('aesthetic_neon') || 'on';
+        const savedFavicon = localStorage.getItem('aesthetic_custom_favicon') || '';
 
         document.documentElement.setAttribute('data-theme', savedTheme);
         document.documentElement.setAttribute('data-mode', savedMode);
-        document.getElementById('themeSelect').value = savedTheme;
-        document.getElementById('mainTitleDisplay').textContent = savedTitle;
-        document.getElementById('page-main-title').textContent = savedTitle;
-        
         document.documentElement.style.setProperty('--card-radius', savedRadius);
-        document.documentElement.style.setProperty('--glass-blur', savedBlur);
-        document.getElementById('radiusSetting').value = savedRadius;
-        document.getElementById('blurSetting').value = savedBlur;
+        document.documentElement.setAttribute('data-neon', savedNeon);
 
+        document.getElementById('themeSelect').value = savedTheme;
+        document.getElementById('titleText').textContent = savedTitle;
+        document.getElementById('page-main-title').textContent = savedTitle;
+        document.getElementById('radiusSetting').value = savedRadius;
+        document.getElementById('neonSetting').value = savedNeon;
+        document.getElementById('customFaviconInput').value = savedFavicon;
+
+        applyFavicon(savedFavicon);
         updateModeButtonIcon(savedMode);
 
         function changeTheme(theme) {
@@ -602,18 +621,30 @@
             document.getElementById('modeBtn').textContent = mode === 'dark' ? '🌙' : '☀️';
         }
 
-        // Cambiar el propio nombre de la web (Título principal)
+        function applyFavicon(url) {
+            const headerImg = document.getElementById('headerFavicon');
+            const dynamicFavicon = document.getElementById('dynamic-favicon');
+            
+            if (url && url.trim() !== '') {
+                headerImg.src = url;
+                headerImg.style.display = 'inline-block';
+                dynamicFavicon.href = url;
+            } else {
+                headerImg.style.display = 'none';
+                dynamicFavicon.href = 'https://www.google.com/s2/favicons?domain=github.com&sz=64';
+            }
+        }
+
         function changeAppTitle() {
-            const newTitle = prompt("Introduce el nuevo nombre para tu Launchpad:", document.getElementById('mainTitleDisplay').textContent);
+            const newTitle = prompt("Introduce el nuevo nombre para tu Launchpad:", document.getElementById('titleText').textContent);
             if (newTitle !== null && newTitle.trim() !== "") {
                 const cleanTitle = newTitle.trim();
-                document.getElementById('mainTitleDisplay').textContent = cleanTitle;
+                document.getElementById('titleText').textContent = cleanTitle;
                 document.getElementById('page-main-title').textContent = cleanTitle;
                 localStorage.setItem('aesthetic_app_title', cleanTitle);
             }
         }
 
-        // Ajustes avanzados de personalización
         function openSettingsModal() {
             document.getElementById('settings-modal').style.display = 'flex';
         }
@@ -624,16 +655,19 @@
 
         function updateCustomization() {
             const radius = document.getElementById('radiusSetting').value;
-            const blur = document.getElementById('blurSetting').value;
+            const neon = document.getElementById('neonSetting').value;
+            const customFavicon = document.getElementById('customFaviconInput').value.trim();
 
             document.documentElement.style.setProperty('--card-radius', radius);
-            document.documentElement.style.setProperty('--glass-blur', blur);
+            document.documentElement.setAttribute('data-neon', neon);
 
             localStorage.setItem('aesthetic_radius', radius);
-            localStorage.setItem('aesthetic_blur', blur);
+            localStorage.setItem('aesthetic_neon', neon);
+            localStorage.setItem('aesthetic_custom_favicon', customFavicon);
+
+            applyFavicon(customFavicon);
         }
 
-        // Renderizado con animación escalonada
         function renderShortcuts() {
             const container = document.getElementById('gridContainer');
             container.innerHTML = '';
@@ -644,9 +678,9 @@
                 card.target = "_blank";
                 card.className = 'shortcut-card';
                 card.dataset.id = item.id;
-                card.style.animationDelay = `${index * 0.05}s`;
+                card.style.animationDelay = `${index * 0.04}s`;
 
-                const domain = new URL(item.url.startsWith('http') ? item.url : `https://${item.url}`).hostname;
+                const domain = new URL(item.url.startsWith('http') ? item.url : `https://` + item.url).hostname;
                 const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
 
                 card.innerHTML = `
@@ -742,7 +776,7 @@
         }
 
         function saveAndRender() {
-            localStorage.setItem('aesthetic_shortcuts_ultimate', JSON.stringify(shortcuts));
+            localStorage.setItem('aesthetic_shortcuts_v4', JSON.stringify(shortcuts));
             renderShortcuts();
         }
 
