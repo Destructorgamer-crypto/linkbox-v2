@@ -29,7 +29,7 @@
             --blob-color-1: rgba(255, 255, 255, 0.1);
             --blob-color-2: rgba(115, 115, 115, 0.12);
             --blob-color-3: rgba(212, 212, 212, 0.08);
-            --initial-color: #ffffff; /* Letra blanca brillante para que destaque */
+            --initial-color: #ffffff;
         }
 
         /* Tema: Dark Space */
@@ -195,6 +195,128 @@
             --blob-color-1: rgba(245, 158, 11, 0.18);
             --blob-color-2: rgba(252, 211, 77, 0.15);
             --blob-color-3: rgba(245, 158, 11, 0.15);
+            --initial-color: var(--accent);
+        }
+
+        /* --- NUEVOS TEMAS AÑADIDOS --- */
+
+        /* Tema: Cyberpunk City */
+        :root[data-theme="cyberpunk"][data-mode="dark"] {
+            --bg-gradient: linear-gradient(135deg, #090314 0%, #1f0c3a 50%, #04010a 100%);
+            --glass-bg: rgba(20, 10, 35, 0.85);
+            --glass-border: rgba(250, 204, 21, 0.35);
+            --text-main: #fef08a;
+            --text-muted: #d8b4fe;
+            --accent: #facc15;
+            --accent-glow: rgba(250, 204, 21, 0.45);
+            --card-hover: rgba(35, 18, 60, 0.95);
+            --blob-color-1: rgba(250, 204, 21, 0.2);
+            --blob-color-2: rgba(168, 85, 247, 0.25);
+            --blob-color-3: rgba(236, 72, 153, 0.2);
+            --initial-color: var(--accent);
+        }
+        :root[data-theme="cyberpunk"][data-mode="light"] {
+            --bg-gradient: linear-gradient(135deg, #fef9c3 0%, #fef08a 50%, #fef08a 100%);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(202, 138, 4, 0.3);
+            --text-main: #422006;
+            --text-muted: #713f12;
+            --accent: #ca8a04;
+            --accent-glow: rgba(202, 138, 4, 0.3);
+            --card-hover: rgba(255, 255, 255, 1);
+            --blob-color-1: rgba(250, 204, 21, 0.25);
+            --blob-color-2: rgba(236, 72, 153, 0.15);
+            --blob-color-3: rgba(168, 85, 247, 0.15);
+            --initial-color: var(--accent);
+        }
+
+        /* Tema: Deep Ocean */
+        :root[data-theme="ocean"][data-mode="dark"] {
+            --bg-gradient: linear-gradient(135deg, #020617 0%, #082f49 50%, #020617 100%);
+            --glass-bg: rgba(12, 35, 60, 0.85);
+            --glass-border: rgba(56, 189, 248, 0.3);
+            --text-main: #e0f2fe;
+            --text-muted: #7dd3fc;
+            --accent: #0ea5e9;
+            --accent-glow: rgba(14, 165, 233, 0.4);
+            --card-hover: rgba(18, 50, 85, 0.9);
+            --blob-color-1: rgba(14, 165, 233, 0.22);
+            --blob-color-2: rgba(56, 189, 248, 0.18);
+            --blob-color-3: rgba(20, 184, 166, 0.2);
+            --initial-color: var(--accent);
+        }
+        :root[data-theme="ocean"][data-mode="light"] {
+            --bg-gradient: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #7dd3fc 100%);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(14, 165, 233, 0.25);
+            --text-main: #0369a1;
+            --text-muted: #0284c7;
+            --accent: #0284c7;
+            --accent-glow: rgba(2, 132, 199, 0.25);
+            --card-hover: rgba(255, 255, 255, 1);
+            --blob-color-1: rgba(56, 189, 248, 0.2);
+            --blob-color-2: rgba(14, 165, 233, 0.15);
+            --blob-color-3: rgba(45, 212, 191, 0.15);
+            --initial-color: var(--accent);
+        }
+
+        /* Tema: Crimson Blood */
+        :root[data-theme="crimson"][data-mode="dark"] {
+            --bg-gradient: linear-gradient(135deg, #180202 0%, #3f0808 50%, #0d0101 100%);
+            --glass-bg: rgba(40, 10, 10, 0.85);
+            --glass-border: rgba(239, 68, 68, 0.35);
+            --text-main: #fee2e2;
+            --text-muted: #fca5a5;
+            --accent: #ef4444;
+            --accent-glow: rgba(239, 68, 68, 0.45);
+            --card-hover: rgba(65, 18, 18, 0.95);
+            --blob-color-1: rgba(239, 68, 68, 0.25);
+            --blob-color-2: rgba(220, 38, 38, 0.18);
+            --blob-color-3: rgba(153, 27, 27, 0.22);
+            --initial-color: var(--accent);
+        }
+        :root[data-theme="crimson"][data-mode="light"] {
+            --bg-gradient: linear-gradient(135deg, #fee2e2 0%, #fecaca 50%, #fca5a5 100%);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(239, 68, 68, 0.3);
+            --text-main: #7f1d1d;
+            --text-muted: #991b1b;
+            --accent: #dc2626;
+            --accent-glow: rgba(220, 38, 38, 0.25);
+            --card-hover: rgba(255, 255, 255, 1);
+            --blob-color-1: rgba(239, 68, 68, 0.2);
+            --blob-color-2: rgba(248, 113, 113, 0.18);
+            --blob-color-3: rgba(252, 165, 165, 0.15);
+            --initial-color: var(--accent);
+        }
+
+        /* Tema: Coffee Mocha */
+        :root[data-theme="mocha"][data-mode="dark"] {
+            --bg-gradient: linear-gradient(135deg, #1c1512 0%, #2e211b 50%, #100b09 100%);
+            --glass-bg: rgba(45, 34, 28, 0.85);
+            --glass-border: rgba(217, 143, 93, 0.3);
+            --text-main: #f5ede6;
+            --text-muted: #d4b8a8;
+            --accent: #d98f5d;
+            --accent-glow: rgba(217, 143, 93, 0.4);
+            --card-hover: rgba(65, 49, 41, 0.9);
+            --blob-color-1: rgba(217, 143, 93, 0.2);
+            --blob-color-2: rgba(184, 115, 51, 0.18);
+            --blob-color-3: rgba(120, 75, 45, 0.2);
+            --initial-color: var(--accent);
+        }
+        :root[data-theme="mocha"][data-mode="light"] {
+            --bg-gradient: linear-gradient(135deg, #f5ede6 0%, #e8d7cb 50%, #d4b8a8 100%);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(184, 115, 51, 0.25);
+            --text-main: #4a2e1b;
+            --text-muted: #6b4429;
+            --accent: #b45309;
+            --accent-glow: rgba(180, 83, 9, 0.2);
+            --card-hover: rgba(255, 255, 255, 1);
+            --blob-color-1: rgba(217, 143, 93, 0.2);
+            --blob-color-2: rgba(184, 115, 51, 0.15);
+            --blob-color-3: rgba(245, 230, 211, 0.25);
             --initial-color: var(--accent);
         }
 
@@ -712,6 +834,10 @@
                     <option value="sunset">Sunset Vibes</option>
                     <option value="emerald">Emerald Matrix</option>
                     <option value="amber">Golden Amber</option>
+                    <option value="cyberpunk">Cyberpunk City</option>
+                    <option value="ocean">Deep Ocean</option>
+                    <option value="crimson">Crimson Blood</option>
+                    <option value="mocha">Coffee Mocha</option>
                 </select>
             </div>
             <button class="control-btn" onclick="openSettingsModal()" title="Personalización Avanzada">⚙️</button>
