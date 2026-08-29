@@ -11,7 +11,7 @@
         :root {
             --transition-speed: 0.4s;
             --card-radius: 20px;
-            --card-min-width: 110px; /* Tamaño dinámico controlado por la barra */
+            --card-min-width: 110px;
             --glow-effect: 0 15px 30px rgba(0, 0, 0, 0.25), 0 0 20px var(--accent-glow);
         }
 
@@ -25,6 +25,7 @@
             --accent: #6366f1;
             --accent-glow: rgba(99, 102, 241, 0.4);
             --card-hover: rgba(51, 65, 85, 0.9);
+            --blob-color: rgba(99, 102, 241, 0.18);
         }
         :root[data-theme="dark"][data-mode="light"] {
             --bg-gradient: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 50%, #f1f5f9 100%);
@@ -35,6 +36,7 @@
             --accent: #4f46e5;
             --accent-glow: rgba(79, 70, 229, 0.25);
             --card-hover: rgba(255, 255, 255, 1);
+            --blob-color: rgba(79, 70, 229, 0.1);
         }
 
         /* Tema: Cyber Neon */
@@ -47,6 +49,7 @@
             --accent: #ec4899;
             --accent-glow: rgba(236, 72, 153, 0.6);
             --card-hover: rgba(35, 30, 50, 0.95);
+            --blob-color: rgba(236, 72, 153, 0.22);
         }
         :root[data-theme="neon"][data-mode="light"] {
             --bg-gradient: linear-gradient(135deg, #fce7f3 0%, #fae8ff 50%, #fbcfe8 100%);
@@ -57,6 +60,7 @@
             --accent: #db2777;
             --accent-glow: rgba(219, 39, 119, 0.3);
             --card-hover: rgba(255, 255, 255, 1);
+            --blob-color: rgba(219, 39, 119, 0.12);
         }
 
         /* Tema: Clean Minimal */
@@ -69,6 +73,7 @@
             --accent: #262626;
             --accent-glow: rgba(255, 255, 255, 0.15);
             --card-hover: rgba(45, 45, 45, 0.95);
+            --blob-color: rgba(255, 255, 255, 0.08);
         }
         :root[data-theme="minimal"][data-mode="light"] {
             --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
@@ -79,6 +84,7 @@
             --accent: #0284c7;
             --accent-glow: rgba(2, 132, 199, 0.2);
             --card-hover: rgba(255, 255, 255, 1);
+            --blob-color: rgba(2, 132, 199, 0.1);
         }
 
         /* Tema: Sunset Vibes */
@@ -91,6 +97,7 @@
             --accent: #ff758c;
             --accent-glow: rgba(255, 117, 140, 0.5);
             --card-hover: rgba(70, 45, 95, 0.9);
+            --blob-color: rgba(255, 117, 140, 0.2);
         }
         :root[data-theme="sunset"][data-mode="light"] {
             --bg-gradient: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 50%, #ffd1dc 100%);
@@ -101,6 +108,7 @@
             --accent: #e11d48;
             --accent-glow: rgba(225, 29, 72, 0.25);
             --card-hover: rgba(255, 255, 255, 1);
+            --blob-color: rgba(225, 29, 72, 0.12);
         }
 
         /* Tema: Emerald Matrix */
@@ -113,6 +121,7 @@
             --accent: #10b981;
             --accent-glow: rgba(16, 185, 129, 0.4);
             --card-hover: rgba(4, 120, 87, 0.9);
+            --blob-color: rgba(16, 185, 129, 0.2);
         }
         :root[data-theme="emerald"][data-mode="light"] {
             --bg-gradient: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%);
@@ -123,6 +132,7 @@
             --accent: #059669;
             --accent-glow: rgba(5, 150, 105, 0.25);
             --card-hover: rgba(255, 255, 255, 1);
+            --blob-color: rgba(5, 150, 105, 0.12);
         }
 
         /* Tema: Golden Amber */
@@ -135,6 +145,7 @@
             --accent: #f59e0b;
             --accent-glow: rgba(245, 158, 11, 0.4);
             --card-hover: rgba(68, 64, 60, 0.9);
+            --blob-color: rgba(245, 158, 11, 0.2);
         }
         :root[data-theme="amber"][data-mode="light"] {
             --bg-gradient: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fef9c3 100%);
@@ -145,6 +156,7 @@
             --accent: #d97706;
             --accent-glow: rgba(217, 119, 6, 0.25);
             --card-hover: rgba(255, 255, 255, 1);
+            --blob-color: rgba(217, 119, 6, 0.12);
         }
 
         /* --- ESTILOS GENERALES Y ANIMACIÓN DE FONDO --- */
@@ -158,8 +170,8 @@
 
         body {
             background: var(--bg-gradient);
-            background-size: 200% 200%;
-            animation: backgroundLoop 15s ease infinite;
+            background-size: 250% 250%;
+            animation: backgroundLoop 18s ease infinite;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
@@ -167,12 +179,67 @@
             align-items: center;
             padding: 2rem 1rem;
             transition: color var(--transition-speed) ease;
+            position: relative;
+            overflow-x: hidden;
         }
 
         @keyframes backgroundLoop {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
+        }
+
+        /* Capa de formas/luces flotantes de fondo (animación suave en bucle) */
+        .background-blobs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .blob {
+            position: absolute;
+            background: var(--blob-color);
+            border-radius: 50%;
+            filter: blur(60px);
+            animation: floatBlob 12s ease-in-out infinite alternate;
+        }
+
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            left: -100px;
+            animation-duration: 14s;
+        }
+
+        .blob-2 {
+            width: 500px;
+            height: 500px;
+            bottom: -150px;
+            right: -150px;
+            animation-duration: 18s;
+            animation-delay: -3s;
+        }
+
+        .blob-3 {
+            width: 300px;
+            height: 300px;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 10s;
+            animation-delay: -6s;
+        }
+
+        @keyframes floatBlob {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(40px, 30px) scale(1.1); }
+            100% { transform: translate(-30px, 50px) scale(0.95); }
         }
 
         header {
@@ -183,6 +250,7 @@
             align-items: center;
             margin-bottom: 2rem;
             animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1;
         }
 
         h1 {
@@ -246,6 +314,7 @@
             margin-bottom: 2.5rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1;
         }
 
         .card-form input {
@@ -294,6 +363,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width), 1fr));
             gap: 1.5rem;
+            z-index: 1;
         }
 
         .shortcut-card {
@@ -574,6 +644,13 @@
 </head>
 <body>
 
+    <!-- Capa de animación de fondo en bucle suave -->
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
     <header>
         <h1 id="mainTitleDisplay" onclick="changeAppTitle()" title="Haz clic para editar el título">
             <span id="titleText">Aesthetic Launchpad</span>
@@ -772,7 +849,6 @@
                     e.preventDefault();
                     card.classList.remove('drag-over');
                     if (draggedIndex !== null && draggedIndex !== index) {
-                        // Intercambiar posiciones en el array
                         const temp = shortcuts[draggedIndex];
                         shortcuts[draggedIndex] = shortcuts[index];
                         shortcuts[index] = temp;
