@@ -11,11 +11,8 @@
         :root {
             --transition-speed: 0.4s;
             --card-radius: 20px;
+            --card-min-width: 110px; /* Tamaño dinámico controlado por la barra */
             --glow-effect: 0 15px 30px rgba(0, 0, 0, 0.25), 0 0 20px var(--accent-glow);
-        }
-
-        :root[data-neon="off"] {
-            --glow-effect: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
 
         /* Tema: Dark Space */
@@ -106,7 +103,7 @@
             --card-hover: rgba(255, 255, 255, 1);
         }
 
-        /* Tema: Emerald Matrix (NUEVO) */
+        /* Tema: Emerald Matrix */
         :root[data-theme="emerald"][data-mode="dark"] {
             --bg-gradient: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #021a14 100%);
             --glass-bg: rgba(6, 78, 59, 0.85);
@@ -128,7 +125,7 @@
             --card-hover: rgba(255, 255, 255, 1);
         }
 
-        /* Tema: Golden Amber (NUEVO) */
+        /* Tema: Golden Amber */
         :root[data-theme="amber"][data-mode="dark"] {
             --bg-gradient: linear-gradient(135deg, #1c1917 0%, #292524 50%, #0c0a09 100%);
             --glass-bg: rgba(41, 37, 36, 0.85);
@@ -295,7 +292,7 @@
             width: 100%;
             max-width: 900px;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width), 1fr));
             gap: 1.5rem;
         }
 
@@ -461,9 +458,11 @@
             font-size: 0.9rem;
             font-weight: 500;
             color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
         }
 
-        .settings-field-group select, .settings-field-group input {
+        .settings-field-group select, .settings-field-group input[type="text"] {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             color: var(--text-main);
@@ -476,8 +475,34 @@
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        .settings-field-group input {
+        .settings-field-group input[type="text"] {
             cursor: text;
+        }
+
+        /* Estilo para el input de tipo rango (barra deslizable) */
+        .settings-field-group input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            background: var(--glass-border);
+            border-radius: 4px;
+            outline: none;
+            margin-top: 0.5rem;
+        }
+
+        .settings-field-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent-glow);
+            transition: transform 0.2s;
+        }
+
+        .settings-field-group input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
         }
 
         .settings-field-group select:focus, .settings-field-group input:focus {
@@ -618,11 +643,8 @@
                 </select>
             </div>
             <div class="settings-field-group">
-                <label>Efectos de Neón Activos</label>
-                <select id="neonSetting" onchange="updateCustomization()">
-                    <option value="on">Activado (Brillo activo)</option>
-                    <option value="off">Desactivado (Plano)</option>
-                </select>
+                <label>Tamaño de Botones <span id="sizeValueDisplay" style="color: var(--accent);">110px</span></label>
+                <input type="range" id="sizeSetting" min="85" max="160" value="110" oninput="updateCustomization()" onchange="updateCustomization()">
             </div>
             <button class="settings-action-btn" onclick="closeSettingsModal()">¡Listo!</button>
         </div>
@@ -638,18 +660,21 @@
         const savedMode = localStorage.getItem('aesthetic_mode') || 'dark';
         const savedTitle = localStorage.getItem('aesthetic_app_title') || 'Aesthetic Launchpad';
         const savedRadius = localStorage.getItem('aesthetic_radius') || '20px';
-        const savedNeon = localStorage.getItem('aesthetic_neon') || 'on';
+        const savedSize = localStorage.getItem('aesthetic_card_size') || '110px';
 
         document.documentElement.setAttribute('data-theme', savedTheme);
         document.documentElement.setAttribute('data-mode', savedMode);
         document.documentElement.style.setProperty('--card-radius', savedRadius);
-        document.documentElement.setAttribute('data-neon', savedNeon);
+        document.documentElement.style.setProperty('--card-min-width', savedSize);
 
         document.getElementById('themeSelect').value = savedTheme;
         document.getElementById('titleText').textContent = savedTitle;
         document.getElementById('page-main-title').textContent = savedTitle;
         document.getElementById('radiusSetting').value = savedRadius;
-        document.getElementById('neonSetting').value = savedNeon;
+        
+        const numericSize = parseInt(savedSize);
+        document.getElementById('sizeSetting').value = numericSize;
+        document.getElementById('sizeValueDisplay').textContent = savedSize;
 
         updateModeButtonIcon(savedMode);
 
@@ -690,13 +715,14 @@
 
         function updateCustomization() {
             const radius = document.getElementById('radiusSetting').value;
-            const neon = document.getElementById('neonSetting').value;
+            const sizeVal = document.getElementById('sizeSetting').value + 'px';
 
             document.documentElement.style.setProperty('--card-radius', radius);
-            document.documentElement.setAttribute('data-neon', neon);
+            document.documentElement.style.setProperty('--card-min-width', sizeVal);
+            document.getElementById('sizeValueDisplay').textContent = sizeVal;
 
             localStorage.setItem('aesthetic_radius', radius);
-            localStorage.setItem('aesthetic_neon', neon);
+            localStorage.setItem('aesthetic_card_size', sizeVal);
         }
 
         function renderShortcuts() {
@@ -754,7 +780,6 @@
                     }
                 });
 
-                // Prevenir que el enlace abra la página al intentar arrastrar
                 card.addEventListener('click', (e) => {
                     if (card.classList.contains('dragging')) {
                         e.preventDefault();
