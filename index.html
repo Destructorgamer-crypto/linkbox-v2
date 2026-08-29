@@ -20,7 +20,7 @@
 
         /* Tema: Dark Space */
         :root[data-theme="dark"][data-mode="dark"] {
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #090d16 100%);
             --glass-bg: rgba(30, 41, 59, 0.85);
             --glass-border: rgba(255, 255, 255, 0.12);
             --text-main: #f8fafc;
@@ -30,7 +30,7 @@
             --card-hover: rgba(51, 65, 85, 0.9);
         }
         :root[data-theme="dark"][data-mode="light"] {
-            --bg-gradient: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            --bg-gradient: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 50%, #f1f5f9 100%);
             --glass-bg: rgba(255, 255, 255, 0.9);
             --glass-border: rgba(0, 0, 0, 0.08);
             --text-main: #0f172a;
@@ -42,7 +42,7 @@
 
         /* Tema: Cyber Neon */
         :root[data-theme="neon"][data-mode="dark"] {
-            --bg-gradient: linear-gradient(135deg, #050505 0%, #12001a 100%);
+            --bg-gradient: linear-gradient(135deg, #050505 0%, #12001a 50%, #030712 100%);
             --glass-bg: rgba(20, 20, 30, 0.85);
             --glass-border: rgba(236, 72, 153, 0.35);
             --text-main: #fff;
@@ -52,7 +52,7 @@
             --card-hover: rgba(35, 30, 50, 0.95);
         }
         :root[data-theme="neon"][data-mode="light"] {
-            --bg-gradient: linear-gradient(135deg, #fce7f3 0%, #fae8ff 100%);
+            --bg-gradient: linear-gradient(135deg, #fce7f3 0%, #fae8ff 50%, #fbcfe8 100%);
             --glass-bg: rgba(255, 255, 255, 0.95);
             --glass-border: rgba(236, 72, 153, 0.25);
             --text-main: #701a75;
@@ -64,7 +64,7 @@
 
         /* Tema: Clean Minimal */
         :root[data-theme="minimal"][data-mode="dark"] {
-            --bg-gradient: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+            --bg-gradient: linear-gradient(135deg, #121212 0%, #1e1e1e 50%, #0a0a0a 100%);
             --glass-bg: rgba(30, 30, 30, 0.85);
             --glass-border: rgba(255, 255, 255, 0.15);
             --text-main: #e5e5e5;
@@ -74,7 +74,7 @@
             --card-hover: rgba(45, 45, 45, 0.95);
         }
         :root[data-theme="minimal"][data-mode="light"] {
-            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
             --glass-bg: rgba(255, 255, 255, 0.95);
             --glass-border: rgba(0, 0, 0, 0.08);
             --text-main: #0f172a;
@@ -86,7 +86,7 @@
 
         /* Tema: Sunset Vibes */
         :root[data-theme="sunset"][data-mode="dark"] {
-            --bg-gradient: linear-gradient(135deg, #2a0845 0%, #6441a5 100%);
+            --bg-gradient: linear-gradient(135deg, #2a0845 0%, #6441a5 50%, #1a052e 100%);
             --glass-bg: rgba(50, 30, 70, 0.8);
             --glass-border: rgba(255, 150, 150, 0.25);
             --text-main: #fff5f5;
@@ -96,7 +96,7 @@
             --card-hover: rgba(70, 45, 95, 0.9);
         }
         :root[data-theme="sunset"][data-mode="light"] {
-            --bg-gradient: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 100%);
+            --bg-gradient: linear-gradient(135deg, #ffe5ec 0%, #ffc2d1 50%, #ffd1dc 100%);
             --glass-bg: rgba(255, 255, 255, 0.95);
             --glass-border: rgba(255, 117, 140, 0.35);
             --text-main: #581c87;
@@ -106,7 +106,51 @@
             --card-hover: rgba(255, 255, 255, 1);
         }
 
-        /* --- ESTILOS GENERALES --- */
+        /* Tema: Emerald Matrix (NUEVO) */
+        :root[data-theme="emerald"][data-mode="dark"] {
+            --bg-gradient: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #021a14 100%);
+            --glass-bg: rgba(6, 78, 59, 0.85);
+            --glass-border: rgba(52, 211, 153, 0.25);
+            --text-main: #ecfdf5;
+            --text-muted: #a7f3d0;
+            --accent: #10b981;
+            --accent-glow: rgba(16, 185, 129, 0.4);
+            --card-hover: rgba(4, 120, 87, 0.9);
+        }
+        :root[data-theme="emerald"][data-mode="light"] {
+            --bg-gradient: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(16, 185, 129, 0.25);
+            --text-main: #064e3b;
+            --text-muted: #047857;
+            --accent: #059669;
+            --accent-glow: rgba(5, 150, 105, 0.25);
+            --card-hover: rgba(255, 255, 255, 1);
+        }
+
+        /* Tema: Golden Amber (NUEVO) */
+        :root[data-theme="amber"][data-mode="dark"] {
+            --bg-gradient: linear-gradient(135deg, #1c1917 0%, #292524 50%, #0c0a09 100%);
+            --glass-bg: rgba(41, 37, 36, 0.85);
+            --glass-border: rgba(245, 158, 11, 0.3);
+            --text-main: #fef3c7;
+            --text-muted: #d7d3d0;
+            --accent: #f59e0b;
+            --accent-glow: rgba(245, 158, 11, 0.4);
+            --card-hover: rgba(68, 64, 60, 0.9);
+        }
+        :root[data-theme="amber"][data-mode="light"] {
+            --bg-gradient: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fef9c3 100%);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(245, 158, 11, 0.25);
+            --text-main: #78350f;
+            --text-muted: #92400e;
+            --accent: #d97706;
+            --accent-glow: rgba(217, 119, 6, 0.25);
+            --card-hover: rgba(255, 255, 255, 1);
+        }
+
+        /* --- ESTILOS GENERALES Y ANIMACIÓN DE FONDO --- */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -117,13 +161,21 @@
 
         body {
             background: var(--bg-gradient);
+            background-size: 200% 200%;
+            animation: backgroundLoop 15s ease infinite;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 2rem 1rem;
-            transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
+            transition: color var(--transition-speed) ease;
+        }
+
+        @keyframes backgroundLoop {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         header {
@@ -508,6 +560,8 @@
                     <option value="neon">Cyber Neon</option>
                     <option value="minimal">Clean Minimal</option>
                     <option value="sunset">Sunset Vibes</option>
+                    <option value="emerald">Emerald Matrix</option>
+                    <option value="amber">Golden Amber</option>
                 </select>
             </div>
             <button class="control-btn" onclick="openSettingsModal()" title="Personalización Avanzada">⚙️</button>
